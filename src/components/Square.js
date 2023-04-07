@@ -12,6 +12,4 @@ function Square(props) {
     );
 }
 
-console.log("Square loaded")
-
 export default Square;
