@@ -1,6 +1,16 @@
 import React from 'react';
 import Board from './Board';
 import calculateWinner from '../calculatewinner';
+import aiPlay from '../aiplay';
+
+/*This component manages the game state and renders the Board component*/
+
+/*At the moment, the Square components' state is changed by a click from the end user.
+However, I want the player to dispute against an AI, and this AI won't be clicking on the component, but rather passing a value directly.
+
+Therefore I have to change how handleClick works: it needs to call my aiPlay() function after the end user makes it's move.
+
+This is what I will do now*/
 
 class Game extends React.Component {
 
@@ -16,6 +26,9 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
+    /*This function updates the game state when a square is clicked.
+    To implement my AI player's logic, I'll create a function called aiPlay()
+    Therefore, handleClick() needs to include a call to the aiPlay() function when it is not the player's turn.*/
 
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
 
@@ -25,6 +38,8 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
+    /*The handleClick() function first checks if the clicked square is already filled.
+    If it isn't... */
 
     squares[i] = this.state.xIsNext ? 'X' : 'O';
 
@@ -37,6 +52,17 @@ class Game extends React.Component {
 
       xIsNext: !this.state.xIsNext,
     });
+    /*... then the square is valid, and the function updates the game state as before.
+    However, now it also...*/
+
+    if (!calculateWinner(squares) && !this.state.xIsNext) {
+      /*... checks if the game is not over and it's not the player's turn.
+      If both of these conditions are true...*/
+
+        aiPlay();
+        /*it calls the aiPlay() function*/
+    }
+
   }
 
   jumpTo(step) {

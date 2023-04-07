@@ -1,6 +1,7 @@
 import React from 'react';
 import Square from './Square';
 
+/*This component is responsible for rendering the Square components*/
 class Board extends React.Component {
 
   renderSquare(i) {
@@ -34,7 +35,5 @@ class Board extends React.Component {
     );
   }
 }
-
-console.log("Board loaded")
 
 export default Board;
