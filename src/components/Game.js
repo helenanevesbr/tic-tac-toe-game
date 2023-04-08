@@ -5,10 +5,14 @@ import aiPlay from '../aiplay';
 
 /*This component manages the game state and renders the Board component*/
 
-/* Now that my AI knows where each empty square currently is, it has to pick one randomly and set its value to either 'X' or 'O'
-But how does the AI know which one?
-If the end-user is using X, AI can only use O, and when it's the end-user's turn to make a move again, the code needs to know it's time to swap between values.
-How does it knows that?*/
+/* In my previous code, I was calling for aiPlay() in handleClick(), supposedly after the click settled a new game state.
+The problem was that the end-user could do multiple clicks before React realized it was the AI's turn to play.
+What was the reason for the bug? Well, setState is asyncronuys.
+In order to trigger aiPlay(), one condition had to be met: xIsNext had to be false.
+I had to be sure setState had already changed the Game state, including setting xIsNext to false, before testing this condition.
+The condition was not immediatly met, aiPlay() was not called, and end-user was free to mark more squares before the state was finally updated.
+What I'll do now is use componentDidUpdate() to make sure I'll call aiPlay() immediatly after setState() is finished with it's task
+*/
 
 class Game extends React.Component {
 
@@ -20,8 +24,33 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      isAiPlaying: false,
     };
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.isAiPlaying && this.state.history !== prevState.history) {
+      /*prevState is an object that contains the previous state and props of the component.
+      I don't need to explicitly set a history property to prevState because React handles this for me.
+      When the Game component updates, React automatically stores the previous state of the component and passes it to componentDidUpdate as prevState.*/
+
+      const history = this.state.history.slice();
+      const current = history[history.length - 1];
+      const squares = current.squares.slice();
+      
+      const new_squares = aiPlay(squares, this.state.xIsNext);
+
+      this.setState({
+        history: history.concat([{
+          squares: new_squares,
+        }]),
+        stepNumber: history.length,
+        xIsNext: !this.state.xIsNext,
+        isAiPlaying: false, // set isAiPlaying back to false after the AI has played
+      });
+    }
+  }
+
 
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -29,34 +58,29 @@ class Game extends React.Component {
     const squares = current.squares.slice();
 
     if (calculateWinner(squares) || squares[i]) {
+      /*squares[i] returns the symbol ('X' or 'O') at the index i of the squares array.
+      If the square clicked is already filled, the value will be either 'X' or 'O', which is converted to Boolean value as True.
+      If the square is empty, the value will be null.*/
+
       return;
     }
 
-    console.log("squares", squares)
-
     squares[i] = this.state.xIsNext ? 'X' : 'O';
-    console.log("Assign value X or O?", squares[i])
-    /* Initially, state.xIsNext is true, so the ? operator will evaluate to true and assign 'X' to the squares[i].
-    i is the index of the square which was clicked */
 
     this.setState({
       history: history.concat([{
+        /*It creates a new array with the existing history array and a new element.
+        The new element is an object with a single property squares, which has the value of the squares array that was just updated with the new move.*/
+
         squares: squares,
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+      isAiPlaying: true,
     });
-    /*The xIsNext state is set to the opposite of its current value using the ! operator, which is the logical NOT operator in JavaScript.
-    This means that if the current value of xIsNext is true, it will be set to false, and if it is false, it will be set to true.*/
-
-    if (!calculateWinner(squares) && !this.state.xIsNext) {
-      setTimeout(() => {
-          console.log("ai play")
-          aiPlay(history, this.state, this.setState.bind(this));
-      }, 300); // waits for 1 second before executing aiPlay
-    }
 
   }
+
 
   jumpTo(step) {
     this.setState({
@@ -65,12 +89,11 @@ class Game extends React.Component {
     });
   }
 
+
   render() {
 
     const history = this.state.history;
-
     const current = history[this.state.stepNumber];
-
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
