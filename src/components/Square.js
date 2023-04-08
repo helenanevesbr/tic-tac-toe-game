@@ -5,7 +5,9 @@ function Square(props) {
     return (
       <button className="square"
         onClick={props.onClick}>
-          {/*The onClick prop passed down to the Square component is a function that calls the handleClick() in the Game component*/}
+          {/*When you click on a Square component, the onClick prop function that was passed down from the Board component gets called with the index of the clicked square as an argument.
+          This onClick function was itself passed down from the Game component to the Board component, where it was bound to a specific index.
+          This is the main way that the Game component knows when a square has been clicked.*/}
 
         {props.value}
       </button>

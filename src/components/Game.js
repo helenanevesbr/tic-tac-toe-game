@@ -5,6 +5,11 @@ import aiPlay from '../aiplay';
 
 /*This component manages the game state and renders the Board component*/
 
+/* Now that my AI knows where each empty square currently is, it has to pick one randomly and set its value to either 'X' or 'O'
+But how does the AI know which one?
+If the end-user is using X, AI can only use O, and when it's the end-user's turn to make a move again, the code needs to know it's time to swap between values.
+How does it knows that?*/
+
 class Game extends React.Component {
 
   constructor(props) {
@@ -14,7 +19,7 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
       }],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
     };
   }
 
@@ -27,7 +32,12 @@ class Game extends React.Component {
       return;
     }
 
+    console.log("squares", squares)
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+    console.log("Assign value X or O?", squares[i])
+    /* Initially, state.xIsNext is true, so the ? operator will evaluate to true and assign 'X' to the squares[i].
+    i is the index of the square which was clicked */
 
     this.setState({
       history: history.concat([{
@@ -36,9 +46,14 @@ class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
+    /*The xIsNext state is set to the opposite of its current value using the ! operator, which is the logical NOT operator in JavaScript.
+    This means that if the current value of xIsNext is true, it will be set to false, and if it is false, it will be set to true.*/
 
     if (!calculateWinner(squares) && !this.state.xIsNext) {
-        aiPlay(history, this.state, this.setState);
+      setTimeout(() => {
+          console.log("ai play")
+          aiPlay(history, this.state, this.setState.bind(this));
+      }, 300); // waits for 1 second before executing aiPlay
     }
 
   }
