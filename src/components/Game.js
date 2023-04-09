@@ -98,7 +98,10 @@ class Game extends React.Component {
             <button onClick={() => this.resetGame()}>Reset game</button>
           </div>
         </div>
-        <div className="author">This game was developed by Helena Neves.</div>
+        <div className="author">
+          <div>This game was developed by Helena Neves.</div>
+          <div>Click <a href='https://github.com/helenanevesbr/tic-tac-toe-game'>here</a> to see it's repository.</div>
+        </div>
       </div>
     );
   }

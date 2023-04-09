@@ -118,3 +118,12 @@ button:hover {
   color: #aaa;
   margin-top: 20px;
 }
+
+.author a {
+  color: #E85A4F; /* red */
+  text-decoration: none;
+}
+
+.author a:hover {
+  text-decoration: underline;
+}
