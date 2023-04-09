@@ -16,25 +16,38 @@ class Game extends React.Component {
       stepNumber: 0,
       xIsNext: true,
       isAiPlaying: false,
+      winner: null,
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.isAiPlaying && this.state.history !== prevState.history) {
+    if (this.state.isAiPlaying) {
 
       const history = this.state.history.slice();
       const current = history[history.length - 1];
       const squares = current.squares.slice();
       
+      const opponentIsWinner = calculateWinner(squares);
+      if (opponentIsWinner){
+        this.setState({
+          history: history.concat([{squares: squares}]),
+          stepNumber: history.length,
+          isAiPlaying: false,
+          winner: opponentIsWinner
+        });
+        return
+      }
+
       const new_squares = aiPlay(squares, 'O');
 
+      const aiIsWinner = calculateWinner(new_squares);
+
       this.setState({
-        history: history.concat([{
-          squares: new_squares,
-        }]),
+        history: history.concat([{squares: new_squares}]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
         isAiPlaying: false,
+        winner: aiIsWinner,
       });
     }
   }
@@ -45,7 +58,7 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    if (calculateWinner(squares) || squares[i]) {
+    if (this.state.winner || squares[i]) {
       return;
     }
 
@@ -72,11 +85,9 @@ class Game extends React.Component {
 
 
   render() {
-
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-
-    const winner = calculateWinner(current.squares);
+    const winner = this.state.winner; // use the winner state instead of calculating the winner on every render
 
     const moves = history.map((step, move) => {
 
@@ -94,6 +105,10 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
+    } else if (current.squares.every(square => square != null)) {
+      status = 'There was a tie';
+      /* every() method is used to check if every element in the current.squares array is not null. This method returns true if every element satisfies the condition. */
+
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
