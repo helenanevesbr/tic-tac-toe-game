@@ -1,17 +1,17 @@
 import calculateWinner from "./calculate_winner";
 
 export default function tryWinningMove(currentBoard, emptySquaresIndexes, marker) {
-    let newSquares = currentBoard.slice()
 
-    for (let EmptySquare of emptySquaresIndexes) {
-        newSquares[EmptySquare] = marker
+    for (const emptySquare of emptySquaresIndexes) {
+        const newSquares = currentBoard.slice()
+
+        newSquares[emptySquare] = marker
     
-        if (calculateWinner(newSquares)){
-            console.log(`You can win immediatly by marking square ${EmptySquare}`)
-            return EmptySquare
+        if (calculateWinner(newSquares)) {
+            console.log(marker, `can win immediatly by marking square ${emptySquare}`)
+            return emptySquare
         }
-    
-        newSquares = currentBoard.slice()
     }
+    
     return null
 }
