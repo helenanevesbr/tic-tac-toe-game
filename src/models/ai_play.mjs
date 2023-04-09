@@ -5,7 +5,7 @@ function switchPlayer(marker) {
     return marker === "X" ? "O" : "X"
 }
 
-export default function aiPlay(squares, marker) {
+export default function aiPlay(squares, marker, silent = false) {
 
     const emptySquaresIndexes = squares.reduce((acc, square_value, i) => (square_value === null ? acc.concat(i): acc), []);
 
@@ -17,7 +17,9 @@ export default function aiPlay(squares, marker) {
     const winningMove = tryWinningMove(squares, emptySquaresIndexes, marker)
 
     if (winningMove !== null ) {
-        console.log(marker, '- BEST MOVE: WIN THE GAME')
+        if (!silent){
+            console.log(marker, '- BEST MOVE: WIN THE GAME')
+        }
         squares[winningMove] = marker;
         return squares
     }
@@ -27,14 +29,18 @@ export default function aiPlay(squares, marker) {
     const winningMoveFromRival = tryWinningMove(squares, emptySquaresIndexes, oponentMarker)
 
     if (winningMoveFromRival !== null ) {
-        console.log(marker, '- SECOND BEST MOVE: BLOCK A WINNING MOVE FROM YOUR ADVERSARY')
+        if (!silent){
+            console.log(marker, '- SECOND BEST MOVE: BLOCK A WINNING MOVE FROM YOUR ADVERSARY')
+        }
         squares[winningMoveFromRival] = marker;
         return squares
     }
 
     //~~~~~ THIRD BEST MOVE: MARK THE SQUARE IN THE BOARD'S CENTER
     if (emptySquaresIndexes.includes(4)) {
-        console.log(marker, "- THIRD BEST MOVE: MARK THE SQUARE IN THE BOARD'S CENTER")
+        if (!silent){
+            console.log(marker, "- THIRD BEST MOVE: MARK THE SQUARE IN THE BOARD'S CENTER")
+        }
         squares[4] = marker;
         return squares
     }
@@ -50,14 +56,18 @@ export default function aiPlay(squares, marker) {
 
     const emptyCornerSquare = pickEmptySquareRandomly(emptyCornerSquares)
     if (cornerSquares.includes(emptyCornerSquare)) {
-        console.log(marker, "- FORTH BEST MOVE: MARK ANY CORNER SQUARE AVAILABLE")
+        if (!silent){
+            console.log(marker, "- FORTH BEST MOVE: MARK ANY CORNER SQUARE AVAILABLE")
+        }
         squares[emptyCornerSquare] = marker;
         return squares
     }
 
     // ~~~ RANDOM PLAY ~~~
     const randomIndex = pickEmptySquareRandomly(emptySquaresIndexes)
-    console.log(marker, "- RANDOM PLAY")
+    if (!silent){
+        console.log(marker, "- RANDOM PLAY")
+    }
     squares[randomIndex] = marker;
     return squares
 }

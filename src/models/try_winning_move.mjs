@@ -8,7 +8,6 @@ export default function tryWinningMove(currentBoard, emptySquaresIndexes, marker
         newSquares[emptySquare] = marker
     
         if (calculateWinner(newSquares)) {
-            console.log(marker, `can win immediatly by marking square ${emptySquare}`)
             return emptySquare
         }
     }
