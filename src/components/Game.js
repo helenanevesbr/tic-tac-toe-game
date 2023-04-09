@@ -1,7 +1,7 @@
 import React from 'react';
 import Board from './Board';
-import calculateWinner from '../calculate_winner';
-import aiPlay from '../ai_play';
+import calculateWinner from '../models/calculate_winner.mjs';
+import aiPlay from '../models/ai_play.mjs';
 
 /*This component manages the game state and renders the Board component*/
 
@@ -34,12 +34,12 @@ class Game extends React.Component {
         return
       }
 
-      const new_squares = aiPlay(squares, 'O');
+      const newSquares = aiPlay(squares, 'O');
 
-      const aiIsWinner = calculateWinner(new_squares);
+      const aiIsWinner = calculateWinner(newSquares);
 
       this.setState({
-        squares: new_squares,
+        squares: newSquares,
         xIsNext: !this.state.xIsNext,
         isAiPlaying: false,
         winner: aiIsWinner,
