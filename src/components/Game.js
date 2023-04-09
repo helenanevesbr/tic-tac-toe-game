@@ -5,33 +5,29 @@ import aiPlay from '../ai_play';
 
 /*This component manages the game state and renders the Board component*/
 
+const initialState = {
+  squares: Array(9).fill(null),
+  xIsNext: true,
+  isAiPlaying: false,
+  winner: null,
+}
+
 class Game extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      history: [{
-        squares: Array(9).fill(null),
-      }],
-      stepNumber: 0,
-      xIsNext: true,
-      isAiPlaying: false,
-      winner: null,
-    };
+    this.state = initialState
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isAiPlaying) {
-
-      const history = this.state.history.slice();
-      const current = history[history.length - 1];
-      const squares = current.squares.slice();
+      const squares = this.state.squares.slice();
       
       const opponentIsWinner = calculateWinner(squares);
+
       if (opponentIsWinner){
         this.setState({
-          history: history.concat([{squares: squares}]),
-          stepNumber: history.length,
+          squares: squares,
           isAiPlaying: false,
           winner: opponentIsWinner
         });
@@ -43,8 +39,7 @@ class Game extends React.Component {
       const aiIsWinner = calculateWinner(new_squares);
 
       this.setState({
-        history: history.concat([{squares: new_squares}]),
-        stepNumber: history.length,
+        squares: new_squares,
         xIsNext: !this.state.xIsNext,
         isAiPlaying: false,
         winner: aiIsWinner,
@@ -54,9 +49,7 @@ class Game extends React.Component {
 
 
   handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
+    const squares = this.state.squares.slice();
 
     if (this.state.winner || squares[i]) {
       return;
@@ -65,50 +58,26 @@ class Game extends React.Component {
     squares[i] = this.state.xIsNext ? 'X' : 'O';
 
     this.setState({
-      history: history.concat([{
-        squares: squares,
-      }]),
-      stepNumber: history.length,
+      squares: squares,
       xIsNext: !this.state.xIsNext,
       isAiPlaying: true,
     });
 
   }
 
-
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    });
+  resetGame(){
+    this.setState(initialState)
   }
 
-
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
+    const squares = this.state.squares
     const winner = this.state.winner; // use the winner state instead of calculating the winner on every render
-
-    const moves = history.map((step, move) => {
-
-      const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
-
-      return (
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      );
-    });
 
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
-    } else if (current.squares.every(square => square != null)) {
+    } else if (squares.every(square => square != null)) {
       status = 'There was a tie';
-      /* every() method is used to check if every element in the current.squares array is not null. This method returns true if every element satisfies the condition. */
-
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -117,13 +86,13 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board
-            squares={current.squares}
+            squares={squares}
             onClick={(i) => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <button onClick={() => this.resetGame()}>Reset game</button>
         </div>
       </div>
     );
