@@ -77,23 +77,28 @@ class Game extends React.Component {
     if (winner) {
       status = 'Winner: ' + winner;
     } else if (squares.every(square => square != null)) {
-      status = 'There was a tie';
+      status = 'There was a tie.';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            squares={squares}
-            onClick={(i) => this.handleClick(i)}
-          />
+      <div>
+        <div className="game">
+          <div className="game-status">
+            {status}
+          </div>
+          <div className="game-board">
+            <Board
+              squares={squares}
+              onClick={(i) => this.handleClick(i)}
+            />
+          </div>
+          <div className="game-reset">
+            <button onClick={() => this.resetGame()}>Reset game</button>
+          </div>
         </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <button onClick={() => this.resetGame()}>Reset game</button>
-        </div>
+        <div className="author">This game was developed by Helena Neves.</div>
       </div>
     );
   }
