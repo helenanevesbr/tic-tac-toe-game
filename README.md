@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+## Jogo da Velha
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este é um simples jogo da velha construído usando Node.js e React. Ele é jogado entre um humano e uma inteligência artificial (AI).
 
-## Available Scripts
+### Como Jogar
 
-In the project directory, you can run:
+- Comece executando o aplicativo usando o comando `npm start`. Isso iniciará o servidor e abrirá o aplicativo em seu navegador padrão.
 
-### `npm start`
+- O tabuleiro do jogo é exibido na tela. Clique em qualquer um dos quadrados vazios para fazer uma jogada.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- O jogador da AI fará sua jogada. O jogo continuará até que um dos jogadores vença ou o jogo termine em um empate.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Para reiniciar o jogo, clique no botão "Reset".
 
-### `npm test`
+### Tecnologias Usadas
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js v18.14.0
+- React 18.2.0
 
-### `npm run build`
+### Testes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+O aplicativo inclui dois testes de unidade:
+- Um teste para o método que verifica se o jogo tem um vencedor
+- Outro teste para os muitos movimentos que a AI pode executar
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Os testes foram criados usando Mocha e Chai.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Instalando Dependências
 
-### `npm run eject`
+Antes de executar o aplicativo, você precisará instalar as dependências necessárias usando o seguinte comando:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install
+```
+### Executando Testes
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Para executar os testes, use o seguinte comando:
+```bash
+npm test
+```
+### Créditos
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este aplicativo foi desenvolvido por Helena Neves. Se você tiver alguma dúvida ou feedback, entre em contato comigo em helenaneves.br@gmail.com.
