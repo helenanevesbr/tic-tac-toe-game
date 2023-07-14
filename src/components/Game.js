@@ -1,6 +1,6 @@
 import React from 'react';
 import Board from './Board';
-import calculateWinner from '../models/calculate_winner.mjs';
+import calculateWinner from  '../external/client.mjs'
 import aiPlay from '../models/ai_play.mjs';
 
 /*This component manages the game state and renders the Board component*/
@@ -19,13 +19,13 @@ class Game extends React.Component {
     this.state = initialState
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     if (this.state.isAiPlaying) {
       const squares = this.state.squares.slice();
       
-      const opponentIsWinner = calculateWinner(squares);
+      const opponentIsWinner = await calculateWinner(squares); //since this is asyn, it was returning just an object Promise.
 
-      if (opponentIsWinner){
+      if (opponentIsWinner){ // since every object inside an if converts to a positive, it was throwing a false positive at the first move.
         this.setState({
           squares: squares,
           isAiPlaying: false,
@@ -36,7 +36,7 @@ class Game extends React.Component {
 
       const newSquares = aiPlay(squares, 'O');
 
-      const aiIsWinner = calculateWinner(newSquares);
+      const aiIsWinner = await calculateWinner(newSquares);
 
       this.setState({
         squares: newSquares,
@@ -71,7 +71,7 @@ class Game extends React.Component {
 
   render() {
     const squares = this.state.squares
-    const winner = this.state.winner; // use the winner state instead of calculating the winner on every render
+    const winner = this.state.winner;
 
     let status;
     if (winner) {
