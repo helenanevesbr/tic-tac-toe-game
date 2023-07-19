@@ -1,7 +1,6 @@
 import React from 'react';
 import Board from './Board';
-import calculateWinner from  '../external/client.mjs'
-import aiPlay from '../models/ai_play.mjs';
+import { calculateWinner, aiPlay } from  '../external/client.mjs'
 
 /*This component manages the game state and renders the Board component*/
 
@@ -34,7 +33,7 @@ class Game extends React.Component {
         return
       }
 
-      const newSquares = aiPlay(squares, 'O');
+      const newSquares = await aiPlay(squares, 'O');
 
       const aiIsWinner = await calculateWinner(newSquares);
 
