@@ -1,6 +1,7 @@
 ## Jogo da Velha
 
-Este é um simples jogo da velha construído usando Node.js e React. Ele é jogado entre um humano e uma inteligência artificial (AI).
+Este é um simples jogo da velha construído usando Node.js e React no front-end e FLask (Python) no back-end.
+Ele é jogado entre um humano e uma inteligência artificial (AI).
 
 ### Como Jogar
 
@@ -16,6 +17,7 @@ Este é um simples jogo da velha construído usando Node.js e React. Ele é joga
 
 - Node.js v18.14.0
 - React 18.2.0
+- Flask 2.2.5
 
 ### Testes
 
