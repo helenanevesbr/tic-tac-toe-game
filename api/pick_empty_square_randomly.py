@@ -1,7 +1,8 @@
 import math
+import random
 
 def pickEmptySquareRandomly(emptySquaresIndexes):
-    randomIndex = math.floor(math.random() * emptySquaresIndexes.length)
+    randomIndex = math.floor(random.random() * len(emptySquaresIndexes))
     randomEmptySquareIndex = emptySquaresIndexes[randomIndex]
     
     return randomEmptySquareIndex

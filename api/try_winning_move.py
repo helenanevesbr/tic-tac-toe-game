@@ -5,8 +5,8 @@ def tryWinningMove(currentBoard, emptySquaresIndexes, marker):
     for emptySquare in emptySquaresIndexes:
         newSquares = currentBoard.copy()
         newSquares[emptySquare] = marker
-    
-        if calculateWinner(newSquares):
+
+        if calculateWinner(newSquares)["winner"]:
             return emptySquare
     
     return None
