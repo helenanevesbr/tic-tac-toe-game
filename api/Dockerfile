@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Comando para executar a aplicação
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "tictactoe_api.py"]

@@ -1,5 +1,5 @@
 function calculateWinner(squares){
-  return fetch('http://127.0.0.1:5000/calculatewinner', {
+  return fetch('http://127.0.0.1:8000/calculatewinner', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ function calculateWinner(squares){
 }
 
 function aiPlay(squares, marker){
-  return fetch('http://127.0.0.1:5000/aiplay', {
+  return fetch('http://127.0.0.1:8000/aiplay', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
