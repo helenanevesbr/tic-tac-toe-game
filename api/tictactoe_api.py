@@ -1,7 +1,10 @@
 from calculate_winner import calculateWinner
 from ai_play import aiPlay
 from flask import Flask, request
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 @app.after_request
 def add_headers(response):
